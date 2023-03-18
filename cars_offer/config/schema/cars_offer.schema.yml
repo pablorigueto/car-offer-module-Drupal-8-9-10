@@ -1,0 +1,100 @@
+field.field_settings.cars_offer:
+  type: mapping
+  label: 'Year Only range settings'
+  mapping:
+    cars_offer_from:
+      type: string
+      label: 'Start year'
+    cars_offer_to:
+      type: string
+      label: 'End year'
+
+clt_offer_table:
+  description: 'Client offers'
+  fields:
+    id:
+      type: integer
+      not null: true
+      description: 'Primary key for client offers'
+      unsigned: true
+      auto_increment: true
+    nodeId:
+      type: integer
+      length: 20
+      description: 'Node ID'
+    datetime:
+      type: varchar
+      length: 25
+      description: 'Date and Time'
+    name_offer:
+      type: varchar
+      length: 50
+      description: 'Name for offer'
+    email_offer:
+      type: varchar
+      length: 50
+      description: 'Email for offer'
+    phone_offer:
+      type: varchar
+      length: 20
+      description: 'Phone of offer'
+    bday_offer:
+      type: varchar
+      length: 20
+      description: 'Bday of offer'
+    down_offer:
+      type: varchar
+      length: 20
+      description: 'Part of offer'
+    clt_id:
+      type: varchar
+      length: 14
+      description: 'ID of client'      
+    checkbox_with_car_offer:
+      type: bool
+      description: 'Car as part of'
+    clt_debits_offer:
+      type: bool
+      description: 'Current debits'
+    clt_extra_info:
+      type: varchar
+      length: 255
+      description: 'Extra infos client'
+    clt_car_brand_offer:
+      type: varchar
+      length: 50
+      description: 'Car Brand'
+    clt_car_model_offer:
+      type: varchar
+      length: 50
+      description: 'Car Model'
+    clt_car_gearshift_offer:
+      type: varchar
+      length: 50
+      description: 'Car gearshift'
+    clt_car_fuel_offer:
+      type: varchar
+      length: 50
+      description: 'Car fuel'
+    clt_car_kmormiles_offer:
+      type: varchar
+      length: 50
+      description: 'Car Km or Miles'
+    clt_car_color_offer:
+      type: varchar
+      length: 50
+      description: 'Car Color'
+    clt_car_sttyear_offer:
+      type: integer
+      length: 4
+      description: 'Car stt year'
+    clt_car_endyear_offer:
+      type: integer
+      length: 4
+      description: 'Car end year'
+    clt_car_id_offer:
+      type: integer
+      length: 20
+      description: 'Car ID'
+  primary key:
+    - nodeId

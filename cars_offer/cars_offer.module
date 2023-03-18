@@ -1,0 +1,509 @@
+<?php
+
+/**
+ * @file
+ * Module file for cars_offer.
+ */
+
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\node\Entity\NodeType;
+use Drupal\node\NodeInterface;
+
+/**
+ * Implements hook_help().
+ */
+function cars_offer_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // For help overview pages we use the route help.page.$moduleName.
+    case 'help.page.cars_offer':
+      $output = '';
+      $output = '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('This module provides a custom site to exposed cars.') . '</p>';
+      $output .= '<h3>' . t('Installation:') . '</h3>';
+      $output .= '<p>' . t('Installation of Cars Offer module is similar to other drupal modules.
+        To install Cars Offer module please follow the below steps:') . '</p>';
+      $output .= '<ol>';
+      $output .= '<li>' . t('Download the Cars Offer module and extract into the /modules directory.') . '</li>';
+      $output .= '<li>' . t('Enable the module.') . '</li>';
+      $output .= '</ol>';
+      return $output;
+  }
+}
+
+/**
+ * Create the node and default fields to cars.
+ */
+function cars_offer_update_10001() {
+
+  $entity_type = 'node';
+  $bundle = 'cars';
+
+  // Check if a node of type 'cars' already exists.
+  $query = \Drupal::entityQuery($entity_type)
+    ->condition('type', $bundle)
+    ->accessCheck(FALSE);
+
+  if (empty($query->execute())) {
+    // Create the content type.
+    $content_type = NodeType::create([
+      'type' => $bundle,
+      'name' => t('Venda de Carros'),
+      'description' => t('Adicione um novo anúncio de carro para venda'),
+    ]);
+    $content_type->save();
+  }
+
+  // Add fiels to cars content type.
+  $fields = [
+    [
+      'field_name' => 'media_car',
+      'label' => 'Add nova foto',
+      'type' => 'image',
+      'required' => TRUE,
+      'translatable' => TRUE,
+      'status' => TRUE,
+    ],
+    [
+      'field_name' => 'fuel_type',
+      'label' => 'Combustível',
+      'type' => 'string',
+      'required' => TRUE,
+      'translatable' => TRUE,
+      'status' => TRUE,
+    ],
+    [
+      'field_name' => 'color',
+      'label' => 'Cor',
+      'type' => 'string',
+      'required' => TRUE,
+      'translatable' => TRUE,
+      'status' => TRUE,
+    ],
+    [
+      'field_name' => 'engine_gearshift_type',
+      'label' => 'Câmbio',
+      'type' => 'list_string',
+      'required' => TRUE,
+      'translatable' => TRUE,
+      'status' => TRUE,
+      'settings' => [
+        'allowed_values' => [
+          'Manual' => 'Manual',
+          'CVT' => 'CVT',
+          'Automática' => 'Automática',
+          'Automática sequencial' => 'Automática sequencial',
+          'Automatizada' => 'Automatizada',
+          'Automatizada dct' => 'Automatizada dct',
+          'Semi-automática' => 'Semi-automática',
+        ],
+      ],
+    ],
+    [
+      'field_name' => 'field_wysiwyg',
+      'label' => 'Informações gerais do carro',
+      'type' => 'text_with_summary',
+      'required' => TRUE,
+      'translatable' => TRUE,
+      'status' => TRUE,
+    ],
+    [
+      'field_name' => 'field_car_km_miles',
+      'label' => 'KM',
+      'type' => 'integer',
+      'required' => TRUE,
+      'translatable' => TRUE,
+      'status' => TRUE,
+    ],
+    [
+      'field_name' => 'field_car_models',
+      'label' => 'Modelo',
+      'type' => 'string',
+      'required' => TRUE,
+      'translatable' => TRUE,
+      'status' => TRUE,
+    ],
+    [
+      'field_name' => 'car_brands',
+      'label' => 'Montadora',
+      'type' => 'list_string',
+      'required' => TRUE,
+      'translatable' => TRUE,
+      'status' => TRUE,
+      'settings' => [
+        'allowed_values' => [
+          'Honda' => 'Honda',
+          'Toyota' => 'Toyota',
+          'Volkswagen' => 'Volkswagen',
+          'Chevrolet' => 'Chevrolet',
+          'Fiat' => 'Fiat',
+          'Ford' => 'Ford',
+          'Hyundai' => 'Hyundai',
+          'Nissan' => 'Nissan',
+          'Volvo' => 'Volvo',
+          'Peugeot' => 'Peugeot',
+          'Renault' => 'Renault',
+          'Citroen' => 'Citroen',
+          'Abarth' => 'Abarth',
+          'Adamo' => 'Adamo',
+          'Agrale' => 'Agrale',
+          'Aldee' => 'Aldee',
+          'Alfa Romeo' => 'Alfa Romeo',
+          'Americar' => 'Americar',
+          'Audi' => 'Audi',
+          'Aurora' => 'Aurora',
+          'Avallone' => 'Avallone',
+          'Bianco' => 'Bianco',
+          'BMW' => 'BMW',
+          'Bola' => 'Bola',
+          'Brasinca' => 'Brasinca',
+          'CBP' => 'CBP',
+          'CBT' => 'CBT',
+          'Chamonix' => 'Chamonix',
+          'Chery' => 'Chery',
+          'Chrysler/Dodge' => 'Chrysler/Dodge',
+          'Concorde' => 'Concorde',
+          'Corona' => 'Corona',
+          'Cross Lander' => 'Cross Lander',
+          'Daewoo' => 'Daewoo',
+          'Daihatsu' => 'Daihatsu',
+          'Dankar' => 'Dankar',
+          'DKW-Vemag' => 'DKW-Vemag',
+          'Edra' => 'Edra',
+          'Emis' => 'Emis',
+          'Engerauto' => 'Engerauto',
+          'Engesa' => 'Engesa',
+          'Envemo' => 'Envemo',
+          'Envesa' => 'Envesa',
+          'Effa' => 'Effa',
+          'Farus' => 'Farus',
+          'FNM' => 'FNM',
+          'Furglass' => 'Furglass',
+          'Geely' => 'Geely',
+          'Glaspac' => 'Glaspac',
+          'GMC' => 'GMC',
+          'Grancar' => 'Grancar',
+          'Gurgel' => 'Gurgel',
+          'Hofstetter' => 'Hofstetter',
+          'Hummer' => 'Hummer',
+          'IBAP' => 'IBAP',
+          'Inbrave' => 'Inbrave',
+          'Infiniti' => 'Infiniti',
+          'Ita' => 'Ita',
+          'JAC' => 'JAC',
+          'Jaguar' => 'Jaguar',
+          'Jeep' => 'Jeep',
+          'JPX' => 'JPX',
+          'Kadron' => 'Kadron',
+          'Kia' => 'Kia',
+          'Lada' => 'Lada',
+          'Lafer' => 'Lafer',
+          'Land Rover' => 'Land Rover',
+          'Lexus' => 'Lexus',
+          'LHM' => 'LHM',
+          'Lifan' => 'Lifan',
+          'Lincoln' => 'Lincoln',
+          'Lobini' => 'Lobini',
+          'Lorena' => 'Lorena',
+          'Macan' => 'Macan',
+          'Mahindra' => 'Mahindra',
+          'Malzoni' => 'Malzoni',
+          'Matra Veículos' => 'Matra Veículos',
+          'Mazda' => 'Mazda',
+          'Megastar Veículos' => 'Megastar Veículos',
+          'Mercedes-Benz' => 'Mercedes-Benz',
+          'MG' => 'MG',
+          'Mini' => 'Mini',
+          'Mirage' => 'Mirage',
+          'Mitsubishi' => 'Mitsubishi',
+          'Miura' => 'Miura',
+          'Monarca' => 'Monarca',
+          'NBM' => 'NBM',
+          'Nobre' => 'Nobre',
+          'PAG/Dacon' => 'PAG/Dacon',
+          'Polystilo' => 'Polystilo',
+          'Puma' => 'Puma',
+          'Py Motors' => 'Py Motors',
+          'Ragge' => 'Ragge',
+          'Romi' => 'Romi',
+          'Saab' => 'Saab',
+          'Simca' => 'Simca',
+          'Santa Matilde' => 'Santa Matilde',
+          'San Vito' => 'San Vito',
+          'SEAT' => 'SEAT',
+          'Smart' => 'Smart',
+          'STV' => 'STV',
+          'Spiller Mattei' => 'Spiller Mattei',
+          'SR Veículos Especiais' => 'SR Veículos Especiais',
+          'Subaru' => 'Subaru',
+          'Suzuki' => 'Suzuki',
+          'SsangYong' => 'SsangYong',
+          'TAC Motors' => 'TAC Motors',
+          'Tanger' => 'Tanger',
+          'Trimax' => 'Trimax',
+          'Troller' => 'Troller',
+          'Villa' => 'Villa',
+          'WMV' => 'WMV',
+          'Willys Overland' => 'Willys Overland',
+        ],
+      ],
+    ],
+    [
+      'field_name' => 'engine_details',
+      'label' => 'Motor',
+      'type' => 'string',
+      'required' => TRUE,
+      'translatable' => TRUE,
+      'status' => TRUE,
+    ],
+    [
+      'field_name' => 'field_placa_license_plate',
+      'label' => 'Placa',
+      'type' => 'string',
+      'required' => TRUE,
+      'translatable' => TRUE,
+      'status' => TRUE,
+    ],
+    [
+      'field_name' => 'end_price',
+      'label' => 'Preço do carro',
+      'type' => 'integer',
+      'required' => TRUE,
+      'translatable' => TRUE,
+      'status' => TRUE,
+    ],
+    [
+      'field_name' => 'field_offer_proposal',
+      'label' => 'Proposta',
+      'type' => 'link',
+      'required' => FALSE,
+      'translatable' => TRUE,
+      'status' => TRUE,
+      'settings' => [
+    // Set to "Internal link".
+        'link_type' => 0,
+        'default_value' => [
+          0 => [
+            'uri' => '/offer',
+          ],
+        ],
+      ],
+    ],
+    [
+      'field_name' => 'field_summary_car',
+      'label' => 'Resumo',
+      'type' => 'string',
+      'required' => FALSE,
+      'translatable' => TRUE,
+      'status' => TRUE,
+    ],
+    [
+      'field_name' => 'field_start_year',
+      'label' => 'Ano Fabricação',
+      'type' => 'cars_offer',
+      'required' => TRUE,
+      'translatable' => TRUE,
+      'status' => TRUE,
+    ],
+    [
+      'field_name' => 'field_end_year',
+      'label' => 'Ano Modelo',
+      'type' => 'cars_offer',
+      'required' => TRUE,
+      'translatable' => TRUE,
+      'status' => TRUE,
+    ],
+  ];
+
+  foreach ($fields as $field) {
+    $field_storage = FieldStorageConfig::create([
+      'field_name' => $field['field_name'],
+      'entity_type' => $entity_type,
+      'type' => $field['type'],
+      'required' => $field['required'],
+      'status' => $field['status'],
+      'settings' => $field['settings'] ?? [],
+      'cardinality' => $field['cardinality'] ?? 1,
+      'translatable' => $field['translatable'] ?? TRUE,
+    ]);
+    $field_storage->save();
+
+    // Create the field config.
+    $field_config = FieldConfig::create([
+      'field_storage' => $field_storage,
+      'bundle' => $bundle,
+      'label' => $field['label'],
+      'required' => $field['required'],
+      'status' => $field['status'],
+      'settings' => $field['settings'] ?? [],
+      'cardinality' => $field['cardinality'] ?? 1,
+      'translatable' => $field['translatable'] ?? TRUE,
+    ]);
+    $field_config->save();
+  }
+}
+
+/**
+ * Set summary and title using the others fields.
+ */
+function cars_offer_node_presave(NodeInterface $node) {
+    // && $node->isNew()
+  if ($node->getType() == 'cars') {
+    $summary = '';
+    $summary .= $node->get('car_brands')->value . " ";
+    $summary .= $node->get('field_car_models')->value . " ";
+    $summary .= $node->get('engine_details')->value . " ";
+    $summary .= $node->get('fuel_type')->value . " ";
+    $summary .= $node->get('engine_gearshift_type')->value . " ";
+    $summary .= $node->get('color')->value;
+
+    // Set summary and title using the others fields.
+    $node->get('field_summary_car')->value = $summary;
+    $node->get('title')->value = $summary;
+
+  }
+}
+
+/**
+ * Set the node id to redirect from node.
+ */
+function cars_offer_node_insert(EntityInterface $entity) {
+
+  if ($entity->getEntityType()->id() === 'node') {
+    $node = $entity->bundle();
+    if ($node == 'cars') {
+      // Get the link field item list.
+      $link_field_items = $entity->get('field_offer_proposal')->first();
+      $node_id = $entity->id();
+      // Replace the URL value.
+      $link_field_items->uri = 'internal:/offer';
+      // Add the node ID to the URL.
+      $link_field_items->options += ['query' => ['nid' => $node_id]];
+      $entity->save();
+    }
+  }
+}
+
+/**
+ * Add some classes in action and submit button from exposed view tab 1.
+ */
+function cars_offer_form_alter($form, $form_state, $form_id) {
+  $formId = $form_id;
+
+  if ($formId == 'views-exposed-form-frontpage-page-1') {
+    $form['actions']['#attributes']['class'][] = 'action-custom-view-btn';
+    $form['actions']['submit']['#attributes']['class'][] = 'submit-custom-view-btn';
+    $form['actions']['submit']['#value'] = t('Localizar');
+  }
+}
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function cars_offer_menu_local_tasks_alter(&$data, $route_name) {
+  // Remove "Create new account" and "Request new password" tabs from user login page.
+  if ($route_name == 'user.login') {
+    unset($data['tabs'][0]['user.register']);
+    unset($data['tabs'][0]['user.pass']);
+  }
+}
+
+/**
+ * Implements hook_entity_view_alter().
+ */
+function cars_offer_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  if ($entity->getEntityTypeId() == 'node') {
+    unset($build['created']);
+    unset($build['uid']);
+  }
+}
+
+/**
+ * {@inheritdoc}
+ */
+function cars_offer_form_views_exposed_form_alter(&$form, FormStateInterface $form_state) {
+  // Replace the value of car price to integer only.
+  // Start price.
+  $startPrice = $form_state->getUserInput()['end_price_value_1'];
+  if (isset($startPrice)
+    && !empty($startPrice)) {
+    if (cars_offer_integer_price($startPrice) == 0) {
+      $form_state->getUserInput()['end_price_value_1'] = '';
+    }
+    else {
+      $form_state->getUserInput()['end_price_value_1'] = cars_offer_integer_price($startPrice);
+    }
+  }
+
+  // End price.
+  $endPrice = $form_state->getUserInput()['end_price_value'];
+  if (isset($endPrice)
+    && !empty($endPrice)) {
+    if (cars_offer_integer_price($endPrice) == 0) {
+      $form_state->getUserInput()['end_price_value'] = '';
+    }
+    else {
+      $form_state->getUserInput()['end_price_value'] = cars_offer_integer_price($endPrice);
+    }
+  }
+
+}
+
+/**
+ * {@inheritdoc}
+ */
+function cars_offer_integer_price($amount) {
+  // Find the decimal separator.
+  $decimal_separator = strstr($amount, ",");
+  // Extract the integer part of the string.
+  $integer = substr($amount, 0, -strlen($decimal_separator));
+  // Replace the thousands separator.
+  $integer = str_replace(".", "", $integer);
+  // Because the special char :( but it's ok.
+  $integerFloat = preg_replace("/[^0-9]/", "", $integer);
+  return intval($integerFloat);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_load().
+ */
+function cars_offer_node_load($nodes) {
+
+  // Hidden the license plate to avoid issues.
+  // Get the current path and if has /edit avoid the process.
+  $currentPath = \Drupal::service('path.current')->getPath();
+  if (strpos($currentPath, "/edit") !== FALSE && substr($currentPath, -5) === "/edit") {
+    return;
+  }
+  foreach ($nodes as $node) {
+    $nodeBundle = $node->bundle();
+    if (!$nodeBundle || empty($nodeBundle) || $nodeBundle != 'cars') {
+      continue;
+    }
+    if (NULL === $node->get('field_placa_license_plate')) {
+      continue;
+    }
+    // Get the lisence_plate field value.
+    $field_value = $node->get('field_placa_license_plate')->value;
+
+    if (!$field_value || empty($field_value) || strlen($field_value) < 2) {
+      continue;
+    }
+    $masked_string = substr($field_value, 0, 1) .
+    str_repeat("*", strlen($field_value) - 2) . substr($field_value, -1);
+    // Just replace without save, because we need this information on edit page.
+    $node->set('field_placa_license_plate', $masked_string);
+  }
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function cars_offer_page_attachments(array &$attachments) {
+  $attachments['#attached']['library'][] = 'cars_offer/cars-offer-slider-bundle';
+}

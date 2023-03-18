@@ -1,0 +1,191 @@
+entity_type = 'node';
+bundle = 'cars';
+
+field name: media_car
+label: 'Adicionar nova'
+type of field: Image
+required: true
+
+field name: fuel_type
+label: 'Combustível'
+type of field: text
+required: true
+
+field name: color
+label: 'Cor'
+type of field: text (simple)
+required: true
+
+field name: engine_gearshift_type
+label: 'Câmbio'
+type of field: list (text)
+required: true
+
+field name: field_wysiwyg
+label: 'Informações gerais do carro'
+type of field: text (long with summary)
+required: true  
+
+field name: field_car_km_miles
+label: 'KM'
+type of field: number (integer)
+required: true
+
+field name: field_car_models
+label: 'Modelo'
+type of field: text (simple)
+required: true
+
+field name: car_brands
+label: 'Montadora'
+type of field: list (text)
+required: true
+
+field name: engine_details
+label: 'Motor'
+type of field: text (simple)
+required: true
+
+field name: field_placa_license_plate
+label: 'Placa'
+type of field: text (simple)
+required: true
+
+field name: end_price
+label: 'Preço do carro'
+type of field: integer
+required: true
+
+field name: field_offer_proposal
+label: 'Proposta'
+type of field: link
+
+field name: field_summary_car
+label: 'Resumo'
+type of field: text (simple)
+
+field name: field_start_year
+label: 'Ano Fabricação'
+type of field: yearonly
+required: true
+
+field name: field_end_year
+label: 'Ano Modelo'
+type of field: yearonly
+required: true
+
+
+
+  $fields = [
+    [
+      'field_name' => 'media_car',
+      'label' => 'Adicionar nova',
+      'type' => 'image',
+      'required' => true,
+    ],
+    [
+      'field_name' => 'fuel_type',
+      'label' => 'Combustível',
+      'type' => 'string',
+      'required' => true,
+    ],
+    [
+      'field_name' => 'color',
+      'label' => 'Cor',
+      'type' => 'string',
+      'required' => true,
+    ],
+    [
+      'field_name' => 'engine_gearshift_type',
+      'label' => 'Câmbio',
+      'type' => 'list_string',
+      'required' => true,
+    ],
+    [
+      'field_name' => 'field_wysiwyg',
+      'label' => 'Informações gerais do carro',
+      'type' => 'text_with_summary',
+      'required' => true,
+    ],
+    [
+      'field_name' => 'field_car_km_miles',
+      'label' => 'KM',
+      'type' => 'integer',
+      'required' => true,
+    ],
+    [
+      'field_name' => 'field_car_models',
+      'label' => 'Modelo',
+      'type' => 'string',
+      'required' => true,
+    ],
+    [
+      'field_name' => 'car_brands',
+      'label' => 'Montadora',
+      'type' => 'list_string',
+      'required' => true,
+    ],
+    [
+      'field_name' => 'engine_details',
+      'label' => 'Motor',
+      'type' => 'string',
+      'required' => true,
+    ],
+    [
+      'field_name' => 'field_placa_license_plate',
+      'label' => 'Placa',
+      'type' => 'string',
+      'required' => true,
+    ],
+    [
+      'field_name' => 'end_price',
+      'label' => 'Preço do carro',
+      'type' => 'integer',
+      'required' => true,
+    ],
+    [
+      'field_name' => 'field_offer_proposal',
+      'label' => 'Proposta',
+      'type' => 'link',
+      'required' => false,
+    ],
+    [
+      'field_name' => 'field_summary_car',
+      'label' => 'Resumo',
+      'type' => 'string',
+      'required' => false,
+    ],
+    [
+      'field_name' => 'field_start_year',
+      'label' => 'Ano Fabricação',
+      'type' => 'cars_offer',
+      'required' => true,
+    ],
+    [
+      'field_name' => 'field_end_year',
+      'label' => 'Ano Modelo',
+      'type' => 'cars_offer',
+      'required' => true,
+    ],
+  ];
+  
+  foreach ($fields as $field) {
+    $field_storage = FieldStorageConfig::create([
+      'field_name' => $field['field_name'],
+      'entity_type' => $entity_type,
+      'type' => $field['type'],
+      'settings' => $field['settings'] ?? [],
+      'cardinality' => $field['cardinality'] ?? 1,
+      'translatable' => $field['translatable'] ?? true,
+    ]);
+    $field_storage->save();
+
+    // Create the field config.
+    $field_config = FieldConfig::create([
+      'field_storage' => $field_storage,
+      'bundle' => $bundle,
+      'label' => $field['label'],
+      'settings' => [],
+    ]);
+    $field_config->save();
+  }

@@ -1,0 +1,14 @@
+cars-offer-slider-bundle:
+  css:
+    theme:
+      css/owl/owl.carousel.min.css: {}
+      css/owl/owl.theme.default.min.css: {}
+  js:
+    js/owl/owl.carousel.min.js: {}
+    js/custom.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupal.ajax
+    - core/drupalSettings
+    - core/jquery
+    - core/once
