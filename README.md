@@ -1,4 +1,4 @@
-![] Screenshots/cover-mobile.jpg
+![](Screenshots/cover-mobile.jpg)
 
 # Car Offer Project
 
@@ -22,4 +22,3 @@ This project is a module to turn/create a drupal website into an online car cata
 - Database manage, create schema, database select and insert
 - Drupal routing, role, permissions and links menu
 - Drupal Plugin Fields
-
