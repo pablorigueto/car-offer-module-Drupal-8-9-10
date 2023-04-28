@@ -1,0 +1,6 @@
+{% for key, value in element['#options'] %}
+  <div class="my-select-option">
+    <img src="{{ value['thumbnail'] }}" alt="{{ value['label'] }}" />
+    <span>{{ value['label'] }}</span>
+  </div>
+{% endfor %}

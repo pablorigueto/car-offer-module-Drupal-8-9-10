@@ -1,0 +1,84 @@
+<section id="last-section" class="section"></section>
+<!-- Start: Footer -->
+<footer id="footer">
+  <div class="footer">
+    <div class="container">
+      {% if page.footer_top %}
+        <section class="footer-top">
+          {{ page.footer_top }}
+        </section>
+      {% endif %}<!-- /footer-top -->
+      {% if page.footer_first or page.footer_second or page.footer_third or page.footer_fourth %}
+       <section class="footer-blocks">
+        {% if page.footer_first %}
+          <div class="footer-block">
+            {{ page.footer_first }}
+          </div>
+        {% endif %}<!--/footer-first -->
+        {% if page.footer_second %}
+          <div class="footer-block">
+            {{ page.footer_second }}
+          </div>
+        {% endif %}<!--/footer-second -->
+        {% if page.footer_third %}
+          <div class="footer-block">
+            {{ page.footer_third }}
+          </div>
+        {% endif %}<!--/footer-third -->
+        {% if page.footer_fourth %}
+          <div class="footer-block">
+            {{ page.footer_fourth }}
+          </div>
+        {% endif %}<!--/footer-fourth -->
+       </section> <!--/footer-blocks -->
+     {% endif %} {# end if for footer one, two, three, four blocks #}
+     {% if copyright_text or all_icons_show %}
+      <section class="footer-bottom-middle">
+        {% if copyright_text %}
+        <div class='footer-parent'>
+          <div class="whoarewe">
+            <h1>QUEM SOMOS</h1>
+            <p>Somos especializados na venda de veículos novos e usados, 
+            nacionais e importados. Com certeza você não só apreciará como irá comprar seu veículo conosco. 
+            Todos nossos veículos são revisados criteriosamente, possibilitando dar aos nossos clientes tranquilidade 
+            na hora da compra. Não perca tempo! Compre seu veículo com quem mais entende do assunto. 
+            Nossos vendedores terão o prazer em atendê-lo.</p>
+          </div>
+
+          <div class="location">
+            <h1>LOCALIZAÇÃO E CONTATO</h1>
+            <p>
+              Endereço:<br>
+              Avenida Marginal, 284 - Centro, Jaguariúna - SP, 13910-070<br>
+              Telefone: (19) 3867-3066
+            </p>
+            {% if all_icons_show %}
+              <div class="footer-bottom-middle-right social-icon-footer">
+                {% include '@carsOffer/template-parts/social-icons.html.twig' %}
+              </div>
+            {% endif %} <!-- end if for all_icons_show -->
+            <div class="copyright">
+              &copy; {{ "now"|date("Y") }} develop by rgto
+            </div>
+          </div>
+
+          </section><!-- /footer-bottom-middle -->
+        </div>
+        {% endif %} <!-- end if for copyright -->
+
+     {% endif %} <!-- end condition if copyright or social icons -->
+     {% if page.footer_bottom %}
+       <div class="footer-bottom">
+         {{ page.footer_bottom }}
+       </div> <!--/.footer-bottom -->
+     {% endif %} <!-- end condition for footer_bottom -->
+    </div><!-- /.container -->
+  </div> <!--/.footer -->
+</footer>
+{% if scrolltotop_on %}
+<div class="scrolltop"><i class="fa fa-angle-up" aria-hidden="true"></i></div>
+{% endif %}
+<!-- End: Footer -->
+{% if bootstrapicons %}
+  {{ attach_library('carsOffer/bootstrap-icons') }}
+{% endif %}

@@ -1,0 +1,148 @@
+<?php
+
+/**
+ * @file
+ * Contains carsOffer theme override and preprocess functions.
+ */
+use Drupal\file\Entity\File;
+/**
+ * Sanitise input urls.
+ */
+function santise_val_url($url) {
+	if ($url != '') {
+
+		// Sanitise (remove all illegal characters) from url.
+		$url = filter_var($url, FILTER_SANITIZE_URL);
+
+		// Validate url.
+		if (filter_var($url, FILTER_VALIDATE_URL) == TRUE) {
+			$url = $url;
+		} else {
+			$url = '#';
+		}
+		return $url;
+	}
+}
+
+/* *
+ * carsOffer page preprocess.
+ * Define variables for theme settings.
+ */
+function carsOffer_preprocess_page(array &$variables) {
+	$config = \Drupal::config('system.site');
+	$variables['site_name'] = $config->get('name');
+	$variables['site_slogan'] = $config->get('slogan');
+	$variables['slider_show'] = theme_get_setting('slider_show', 'carsOffer');
+	//$variables['slider_code'] = theme_get_setting('slider_code', 'carsOffer');
+	$variables['title_1'] = theme_get_setting('title_1', 'carsOffer');
+	$variables['description_1'] = theme_get_setting('description_1', 'carsOffer');
+	$variables['title_2'] = theme_get_setting('title_2', 'carsOffer');
+	$variables['description_2'] = theme_get_setting('description_2', 'carsOffer');
+	$variables['title_3'] = theme_get_setting('title_3', 'carsOffer');
+	$variables['description_3'] = theme_get_setting('description_3', 'carsOffer');
+	$variables['all_icons_show'] = theme_get_setting('all_icons_show', 'carsOffer');
+	$variables['facebook_url'] = santise_val_url(theme_get_setting('facebook_url', 'carsOffer'));
+	$variables['twitter_url'] = santise_val_url(theme_get_setting('twitter_url', 'carsOffer'));
+	$variables['instagram_url'] = santise_val_url(theme_get_setting('instagram_url', 'carsOffer'));
+	$variables['linkedin_url'] = santise_val_url(theme_get_setting('linkedin_url', 'carsOffer'));
+	$variables['youtube_url'] = santise_val_url(theme_get_setting('youtube_url', 'carsOffer'));
+  $variables['vk_url'] = santise_val_url(theme_get_setting('vk_url', 'carsOffer'));
+  $variables['vimeo_url'] = santise_val_url(theme_get_setting('vimeo_url', 'carsOffer'));
+  $variables['whatsapp_url'] = santise_val_url(theme_get_setting('whatsapp_url', 'carsOffer'));
+  $variables['github_url'] = santise_val_url(theme_get_setting('github_url', 'carsOffer'));
+  $variables['telegram_url'] = santise_val_url(theme_get_setting('telegram_url', 'carsOffer'));
+	$variables['scrolltotop_on'] = theme_get_setting('scrolltotop_on', 'carsOffer');
+	$variables['copyright_text'] = theme_get_setting('copyright_text', 'carsOffer');
+  $variables['front_sidebar'] = theme_get_setting('front_sidebar', 'carsOffer');
+	$variables['bootstrapicons'] = theme_get_setting('bootstrapicons');
+}
+
+// Get the image uri to render on search results.
+function carsOffer_preprocess_search_result(&$variables) {
+  $result = $variables['result'];
+  $node = $result['node'];
+
+  // Check if the node has an image attached
+  if ($node->media_car->entity) {
+    $thumbnail_uri = $node->media_car->entity->getFileUri();
+    $variables['thumbnail'] = [
+      '#theme' => 'image',
+      '#uri' => $thumbnail_uri,
+      // '#alt' => $node->media_car->entity->alt,
+      // '#title' => $node->media_car->entity->title,
+    ];
+		$variables['car_brands'] = $node->car_brands->getValue()[0]['value'];
+		$variables['color'] = $node->color->getValue()[0]['value'];
+		$variables['engine_details'] = $node->engine_details->getValue()[0]['value'];
+		$variables['engine_gearshift_type'] = $node->engine_gearshift_type->getValue()[0]['value'];
+		$variables['field_car_km_miles'] = $node->field_car_km_miles->getValue()[0]['value'];
+		$variables['field_car_models'] = $node->field_car_models->getValue()[0]['value'];
+		$variables['field_start_year'] = $node->field_start_year->getValue()[0]['value'];
+		$variables['field_end_year'] = $node->field_end_year->getValue()[0]['value'];
+		$variables['field_summary_car'] = $node->field_summary_car->getValue()[0]['value'];
+		$variables['fuel_type'] = $node->fuel_type->getValue()[0]['value'];
+		$variables['end_price'] = $node->end_price->getValue()[0]['value'];
+  }
+}
+
+/* *
+ * Node preprocess.
+ */
+function carsOffer_preprocess_node(array &$variables) {
+	$variables['node_author_pic'] = theme_get_setting('node_author_pic', 'carsOffer');
+	$variables['node_tags'] = theme_get_setting('node_tags', 'carsOffer');
+}
+
+/* *
+ * Comment preprocess.
+ */
+function carsOffer_preprocess_comment(array &$variables) {
+	$variables['comment_user_pic'] = theme_get_setting('comment_user_pic', 'carsOffer');
+}
+
+/**
+ * Html preprocess for carsOffer theme.
+ * Adds body classes if certain regions have content.
+ * Used for creating different page layout.
+ */
+function carsOffer_preprocess_html(&$variables) {
+  $variables['base_path'] = base_path();
+  $variables['google_font'] = theme_get_setting('google_font', 'carsOffer');
+  // Add variables for theme Settings
+  $variables['css_extra'] = theme_get_setting('css_extra', 'carsOffer');
+  $variables['css_code'] = theme_get_setting('css_code', 'carsOffer');
+	$variables['slider_show'] = theme_get_setting('slider_show', 'carsOffer');
+  $variables['slider_time'] = theme_get_setting('slider_time', 'carsOffer');
+  $variables['slider_dots'] = theme_get_setting('slider_dots', 'carsOffer');
+	$variables['is_front'] = \Drupal::service('path.matcher')->isFrontPage();
+	/* Slider image */
+	$variables['slider_image'] = theme_get_setting('slider_image', 'carsOffer');
+	$slider_image_id = theme_get_setting('slider_image', 'carsOffer');
+	if(!empty($slider_image_id)) {
+		$slider_image_file = File::load($slider_image_id[0]);
+		$slider_image_file->setPermanent();
+		$slider_image_file->save();
+		$slider_image_file_usage = \Drupal::service('file.usage');
+		$slider_image_file_usage->add($slider_image_file, 'carsOffer', 'theme', $slider_image_id[0]);
+	};
+	if(!empty($slider_image_file)) {
+    $imageuri = $slider_image_file->getFileUri();
+		$variables['slider_image_path'] = \Drupal::service('file_url_generator')->generateAbsoluteString($imageuri);
+	};
+}
+
+/* *
+ * Add current page to breadcrumb.
+ */
+function carsOffer_preprocess_breadcrumb(&$variables) {
+	$request = \Drupal::request();
+	$route_match = \Drupal::routeMatch();
+	$page_title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
+	if (!empty($page_title)) {
+		$variables['breadcrumb'][] = [
+			'text' => $page_title,
+		];
+		// Add cache context based on url.
+		$variables['#cache']['contexts'][] = 'url';
+	}
+}

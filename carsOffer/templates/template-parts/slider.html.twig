@@ -1,0 +1,52 @@
+{{ attach_library('carsOffer/slider') }}
+<div class="backgroundColor">
+  <section id="slider">
+    <div class="container">
+      <ul class="owl-carousel home-slider">
+
+        {% if title_1 != '' %}
+         <li>
+          <h1>{{ title_1 }}</h1>
+          {% if description_1 != '' %}
+          <p>{{ description_1 }}</p>
+          {% endif %}
+          </li>
+        {% endif %}
+
+        {% if title_2 != '' %}
+        <li>
+          <h1>{{ title_2 }}</h1>
+          {% if description_2 != '' %}
+          <p>{{ description_2 }}</p>
+          {% endif %}
+          </li>
+        {% endif %}
+
+        {% if title_3 != '' %}
+        <li>
+          <h1>{{ title_3 }}</h1>
+          {% if description_3 != '' %}
+          <p>{{ description_3 }}</p>
+          {% endif %}
+          </li>
+        {% endif %}
+
+          {# {{ title_1 | striptags('<ol>,<ul>,<li>,<p>,<a>,<img>,<video>,<h1>,<h2>,<h3>,<h4>,<h5>,<h6>,<em>,<strong>,<br>,<i>,<div>,<span>,<button>') | raw }} #}
+        {# {% else %}
+        <li>
+          <h1>Atenção!!</h1>
+          <p>Jaguariúna VIVA CAR é só promo top!!!</p>
+          <br />
+          <a class="button" href="#">Veja mais!</a>
+        </li>
+        <li>
+          <h1>Atenção!!</h1>
+          <p>Só promo top!!!</p>
+          <br />
+          <a class="button" href="#">Veja mais!</a>
+        </li> #}
+        {# {% endif %} #}
+      </ul> <!--/.home-slider -->
+    </div>
+  </section>
+</div>
