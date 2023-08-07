@@ -1,5 +1,5 @@
 ![](Screenshots/cover-mobile.jpg)
-[![Video Demo](https://www.youtube.com/shorts/NeDYoNAHZCo)
+[![Video Demo](https://img.youtube.com/vi/NeDYoNAHZCo/0.jpg)](https://www.youtube.com/shorts/NeDYoNAHZCo)
 
 # Car Offer Project
 
