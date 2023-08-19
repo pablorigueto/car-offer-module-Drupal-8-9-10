@@ -276,3 +276,8 @@ calculation of the height of the owl-item that breaks page layouts
 .owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
 	background: #869791;
 }
+
+.frontpage .owl-item a img {
+    height: 181px;
+    object-fit: cover;
+}

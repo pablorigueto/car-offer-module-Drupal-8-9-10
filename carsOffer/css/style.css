@@ -1040,6 +1040,7 @@ ul.main-menu > li > span,
 .header-right .search-icon a {
   display: block;
   padding: 1rem 0.3rem;
+  transition: transform .2s ease;
 }
 
 .dialog-off-canvas-main-canvas ul.main-menu li:hover > a,
@@ -1047,9 +1048,15 @@ ul.main-menu > li > span,
 .dialog-off-canvas-main-canvas .main-menu-item span:hover,
 .header-right ul.main-menu > li a:hover,
 .header-right .search-icon a:hover {
-  background: var(--light);
-  color: var(--pure-black);
-  padding: 1rem 0.8rem;
+  /* background-color: var(--light); */
+  transform: scale(1.04);
+  transition: transform .2s ease;
+  background-color: var(--header-top);
+  /* color: var(--pure-black); */
+}
+
+.main-menu-item {
+  cursor: pointer;
 }
 
 /* main menu */
@@ -1920,7 +1927,7 @@ h3.single-comment-title {
   background: url(../images/slider.jpg) no-repeat;
   /* background-repeat: no-repeat; */
   background-position: center top;
-  background-size: 105% 100%;
+  background-size: 100% 100%;
   overflow: hidden;
   z-index: 2;
 }
@@ -1965,12 +1972,29 @@ ul.home-slider {
 }
 
 .copyright {
-  color: var(--copy);
+  display: flex;
+  justify-content: center;
+  color: var(--bg-body);
 }
 
-.copyright:hover {
-  color: var(--light);
-  cursor: pointer;
+.copyright a {
+  color: #000062;
+  padding-left: 5px;
+  font-weight: 600;
+}
+
+.copyright a:hover, .policy a:hover {
+  color: var(--bg-body);
+  background-color: var(--color-primary-light);
+}
+
+.copyright a:active, .policy a:active {
+  background-color: var(--color-primary-light);
+}
+
+.policy a {
+  color: #26c7fb;
+  font-weight: 600;
 }
 
 @media screen and (min-width: 767px) {
@@ -2152,10 +2176,12 @@ ul.home-slider {
   margin-bottom: 0.7rem;
   box-shadow: 0.1rem 0.1rem 0.5rem var(--middle-gray);
   border-radius: var(--bd-radius);
+  transition: transform 0.2s ease;
 }
 
 #block-carsoffer-content .node-view-mode-teaser:hover {
-  transform: scale(1.01);
+  transition: transform 0.2s ease;
+  transform: scale(1.03);
 }
 
 #block-carsoffer-content .node-view-mode-teaser .node-content .field--name-media-car .field__label {
@@ -2234,10 +2260,15 @@ ul.home-slider {
   height: 2.8rem;
 }
 
-.owl-carousel .owl-nav button.owl-prev,
+/* .owl-carousel .owl-nav button.owl-prev,
 .owl-carousel .owl-nav button.owl-next,
 .owl-carousel button.owl-dot {
   background: #0404048c;
+} */
+
+
+.owl-theme .owl-nav [class*=owl-]:hover {
+  background: var(--header-top);
 }
 
 .owl-theme .owl-nav {
@@ -2247,6 +2278,7 @@ ul.home-slider {
 button.owl-next span,
 button.owl-prev span {
   color: var(--light);
+  font-size: 24px;
 }
 
 .owl-theme .owl-nav [class*=owl-] {
@@ -2388,14 +2420,15 @@ button.owl-prev span {
 #block-carsoffer-breadcrumbs .breadcrumb-items a,
 .breadcrumb-item {
   color: var(--pure-black);
+  transition: transform .2s ease;
 }
 
 #block-carsoffer-breadcrumbs .breadcrumb-items a:hover {
-  border-radius: var(--bd-radius);
-  color: var(--light);
-  padding: 0.7rem 1.2rem;
-  font-weight: 600;
+  transform: scale(1.05);
+  transition: transform .2s ease;
+  background: var(--bg-body);
 }
+
 
 #block-carsoffer-content .node-view-mode-full .field--name-field-wysiwyg .field__label,
 #block-carsoffer-content .node-view-mode-full .field--name-field-summary-car {
@@ -2595,6 +2628,10 @@ ol.search-results li:first-child .image-field {
   #block-carsoffer-content .field-item .image-field {
     margin: var(--unset);
     margin-bottom: var(--unset);
+  }
+
+  .resize-image {
+    height: 180px !important;
   }
 
   #block-carsoffer-content .view-content {
