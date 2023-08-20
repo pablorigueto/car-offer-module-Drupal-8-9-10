@@ -746,6 +746,10 @@ class OfferForm extends FormBase {
     $nodeInfos = [];
 
     foreach ($nodes as $node) {
+      // Filter to get only node type cars.
+      if ($node->getType() !== 'cars') {
+        continue;
+      }
       $media_id = $node->get('media_car')->getValue()[0]['target_id'];
       // Load the file entity using the target ID.
       $file = $this->entityTypeManager->getStorage('file');
